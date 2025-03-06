@@ -12,7 +12,7 @@ class Game{
       400,
       100,
       120,
-      "../images/astroRocker.png");
+      "images/astroRocker.png");
 
     this.height = 650;
     this.width = 1200;
