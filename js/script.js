@@ -5,7 +5,9 @@ window.onload = function () {
   const startButtonElement = document.getElementById("start-button");
   const restartButtonElement = document.getElementById("restart-button");
 
- 
+  const statsContainer = document.getElementById("statsContainer");
+  statsContainer.style.display = "none";   //hide stats main screen
+
   function startNewGame() {
     
     if (ourNewGame) {
@@ -14,6 +16,9 @@ window.onload = function () {
 
     ourNewGame = new Game();
     ourNewGame.start();
+
+    statsContainer.style.display = "block";
+
   }
 
   

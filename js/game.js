@@ -12,7 +12,7 @@ class Game{
       400,
       100,
       120,
-      "images/astroRocker.png");
+      "../images/astroRocker.png");
 
     this.height = 650;
     this.width = 1200;
@@ -133,68 +133,4 @@ class Game{
   
 
 
-      /*;
-      
-      for (let i = 0; i < this.obstacles.length; i++) {
-        const currentObstacle = this.obstacles[i];
-        currentObstacle.move();
-        
-        if (this.player.didCollide(currentObstacle)) {
-          
-          this.obstacles.splice(i, 1);
-          i--;
-         
-          currentObstacle.element.remove();
-          this.lives--;
-          this.livesElement.innerText = this.lives;
-         
-          if (this.lives === 0) {
-            this.gameIsOver = true;
-          }
-        }
-  
-        //check if the red passes the blue...
-        //first we get a point
-        //then we cut the red car out of array
-        if (currentObstacle.top > 650) {
-          this.score++;
-          this.scoreElement.innerText = this.score;
-          //remove the red car from the array in JS
-          this.obstacles.splice(i, 1);
-          i--;
-          //dont forget to remove the img element from the html
-          currentObstacle.element.remove();
-        }
-  
-        //this is where we start with the projectiles
-        for (let j = 0; j < this.projectiles.length; j++) {
-          const currentProjectile = this.projectiles[j];
-          //every projectile has the didCollide method
-          if (currentProjectile.didCollide(currentObstacle)) {
-            this.obstacles.splice(i, 1);
-            i--;
-            //dont forget to remove the img element from the html
-            currentObstacle.element.remove();
-            //remove all of the projectile stuff too
-            this.projectiles.splice(j, 1);
-            j--;
-            currentProjectile.element.remove();
-          }
-        }
-      }
-  
-      //this is a loop just to move the projectiles
-      for (let k = 0; k < this.projectiles.length; k++) {
-        const currentProjectile = this.projectiles[k];
-        currentProjectile.move();
-      }
-    }
-    gameOver() {
-      //stop the loop from running
-      clearInterval(this.gameIntervalId);
-      //hide the game screen
-      this.gameScreen.style.display = "none";
-      //show the game over screen
-      this.gameOverScreen.style.display = "block";
-    }
-  }*/
+     
