@@ -14,7 +14,7 @@ class Game{
       120,
       "images/astroRocker.png");
 
-    this.height = 650;
+    this.height = 625;
     this.width = 1200;
     this.obstacles = [new Obstacle(this.gameScreen)];
     this.projectiles = [];

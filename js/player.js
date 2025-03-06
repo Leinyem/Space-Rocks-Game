@@ -37,7 +37,7 @@ class Player {
     if (this.positionLeft < 0) this.positionLeft = 0;
     if (this.positionLeft + this.width > 1200) this.positionLeft = 1200 - this.width;
     if (this.positionTop < 0) this.positionTop = 0;
-    if (this.positionTop + this.height > 700) this.positionTop = 700 - this.height;
+    if (this.positionTop + this.height > 625) this.positionTop = 625 - this.height;
 
     this.updatePosition();
   }
