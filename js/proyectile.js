@@ -12,7 +12,7 @@ class Projectile {
   // create element projectile
 
   this.element = document.createElement("img");
-  this.element.src = "../images/projectile.png";
+  this.element.src = "images/projectile.png";
   this.element.style.position = "absolute";
   this.element.style.width = `${this.width}px`;
   this.element.style.height = `${this.height}px`;
@@ -65,19 +65,4 @@ checkCollision(obstacle) {
     
     
     
-    /*didCollide(obstacle) {
-      const projectileRect = this.element.getBoundingClientRect();
-      const obstacleRect = obstacle.element.getBoundingClientRect();
-  
-      if (
-        projectileRect.left < obstacleRect.right &&
-        projectileRect.right > obstacleRect.left &&
-        projectileRect.top < obstacleRect.bottom &&
-        projectileRect.bottom > obstacleRect.top
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }*/
+   

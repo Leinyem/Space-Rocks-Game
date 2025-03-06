@@ -65,7 +65,7 @@ margin: 0;
     padding: 20px 0px;
     overflow: hidden;
     position: relative;
-    background-image: url(../images/gameBackground.png);
+    background-image: url(images/gameBackground.png);
     background-size: cover;
     background-color: black;
   
@@ -85,7 +85,7 @@ margin: 0;
   
   #game-end {
     display: none;
-    background-image: url(../images/fondoPres.png);
+    background-image: url(images/fondoPres.png);
     background-size: cover;
     color: white;
     background-repeat: no-repeat;
@@ -134,23 +134,4 @@ margin: 0;
   
   
   
-  /* make car spin with css */
-/*  .spin {
-    animation: spin 0.5s linear;
-  }
-  @-moz-keyframes spin {
-    100% {
-      -moz-transform: rotate(360deg);
-    }
-  }
-  @-webkit-keyframes spin {
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-  @keyframes spin {
-    100% {
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
+ 
