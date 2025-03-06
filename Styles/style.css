@@ -1,0 +1,155 @@
+
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;
+   
+  }
+  
+  #game-intro {
+
+    padding: 0 0;
+    text-align: center;
+    background-color: black;
+    margin: 0;
+
+
+  }
+  #game-intro img{
+
+
+
+width: 80%;
+
+  }
+
+  #statsContainer {
+
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0;
+
+
+  }
+  
+  #game-intro p {
+    
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    color: blue; 
+  } 
+
+  #game-container {
+    
+    width: 100%;
+    padding: 10px 0px;
+    justify-content: center;
+    background-color: black;
+    color: blue ;
+  
+
+  }
+  
+  #game-screen {
+    display: none;
+    align-content: center;
+    padding: 20px 0px;
+    overflow: hidden;
+    position: relative;
+    background-image: url(../images/gameBackground.png);
+    background-size: cover;
+    background-color: black;
+  
+  }
+  
+  @keyframes slide {
+    0% {
+      background-position: 0 -1000px;
+    }
+    95% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 50px;
+    }
+  }
+  
+  #game-end {
+    display: none;
+    background-image: url(../images/fondoPres.png);
+    background-size: cover;
+    color: white;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+ 
+    align-items: center;
+    justify-content: space-between
+   }
+
+   .endContainer{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 250px;
+    color: whitesmoke;
+
+
+   }
+
+
+  
+  .FrontCover-img {
+    width: 100px;
+    margin-bottom: 50px;
+
+  }
+  
+ 
+  
+  body button {
+    font-size: 20px;
+    background-color: #0543b6da;
+    color: #fff;
+    padding: 10px 40px;
+    border: 5;
+    box-shadow: 10;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-display: center;
+  }
+  
+  
+  
+  
+  
+  /* make car spin with css */
+/*  .spin {
+    animation: spin 0.5s linear;
+  }
+  @-moz-keyframes spin {
+    100% {
+      -moz-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @keyframes spin {
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
