@@ -9,7 +9,7 @@ class Obstacle {
     
   
 
-    this.speed = Math.random() * 2 + 2 
+    this.speed = Math.random() * 2 + 4;  
 
     this.element = document.createElement("img");
     this.element.src = "images/meteor.png"; 

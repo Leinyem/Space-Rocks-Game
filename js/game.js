@@ -39,9 +39,9 @@ class Game{
     this.update();
     this.counter++;
 
-    //generate asteroids
+    //generate asteroids, every number divisible by 100 
 
-    if (this.counter % 160 === 0) {
+    if (this.counter % 140 === 0) {
       this.obstacles.push(new Obstacle(this.gameScreen));  
     }
 

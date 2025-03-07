@@ -13,6 +13,19 @@ window.onload = function () {
     if (ourNewGame) {
       ourNewGame = null; 
     }
+     
+   /* //dont forget to ADD MUSIC and PAUSE it when START
+
+    const introMusic = document.getElementById("introMusic");
+    
+    if(introMusic){
+
+      introMusic.volume = 1;
+      introMusic.play
+ }
+     
+     if(introMusic) introMusic.pause()*/
+
 
     ourNewGame = new Game();
     ourNewGame.start();
