@@ -18,12 +18,15 @@ class PowerUp {
     this.element.style.height = `${this.height}px`;
     this.element.style.left = `${this.left}px`;
     this.element.style.top = `${this.top}px`;
+    this.element.classList.add("power-up");
 
     this.gameScreen.appendChild(this.element);
 
     // Tiempo de vida del power-up (desaparece después de 10 segundos)
     this.lifetime = 10000;
     setTimeout(() => this.remove(), this.lifetime);
+
+    this._removed = false; // Flag para saber si ya fue eliminado
   }
 
   getImageByType() {
@@ -31,23 +34,44 @@ class PowerUp {
       return "images/claveSpeed.png";
     } else if (this.type === "musicBall") {
       return "images/claveMusicball.png";
+    } else if (this.type === "shield") {
+      return "images/claveSolDorada.png";
+    } else if (this.type === "beatCore") {
+      return "images/beatCore.png"; // NUEVO: pon aquí la imagen de batería
+    } else if (this.type === "bassFragment") {
+      return "images/bassShard.png"; // NUEVO: pon aquí la imagen de bajo
+    } else if (this.type === "synthCrystal") {
+      return "images/synthCrystal.png"; // NUEVO: pon aquí la imagen de synth
     } else {
       console.error("Tipo de PowerUp inválido:", this.type);
       return ""; // Imagen por defecto
     }
   }
 
+  move() {
+    this.left -= 2;
+    this.element.style.left = `${this.left}px`;
+  }
+
   remove() {
-    this.element.remove();
-    this.game.removePowerUp(this);
+    if (this.element.parentNode) {
+      this.element.remove();
+    }
+    this._removed = true;
   }
 
   checkCollision(player) {
+    const playerRight = player.left + player.width;
+    const playerBottom = player.top + player.height;
+
+    const powerUpRight = this.left + this.width;
+    const powerUpBottom = this.top + this.height;
+
     return !(
-      this.top > player.positionTop + player.height ||
-      this.top + this.height < player.positionTop ||
-      this.left > player.positionLeft + player.width ||
-      this.left + this.width < player.positionLeft
+      playerBottom < this.top ||
+      player.top > powerUpBottom ||
+      playerRight < this.left ||
+      player.left > powerUpRight
     );
   }
 }

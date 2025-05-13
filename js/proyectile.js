@@ -16,6 +16,7 @@ class Projectile {
     this.element.style.height = `${this.height}px`;
     this.element.style.left = `${this.left}px`;
     this.element.style.top = `${this.top}px`;
+    this._removed = false;
 
     this.gameScreen.appendChild(this.element);
   }
@@ -30,7 +31,10 @@ class Projectile {
   }
 
   remove() {
-    this.element.remove(); // Eliminar el elemento del DOM
+    if (this.element.parentNode) {
+      this.element.remove();
+    }
+    this._removed = true;
   }
 
   checkCollision(obstacle) {

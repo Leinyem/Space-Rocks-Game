@@ -1,31 +1,31 @@
 class Player {
   constructor(
     gameScreen,
-    positionLeft,
-    positionTop,
+    left, // Cambié positionLeft por left
+    top, // Cambié positionTop por top
     playerWidth,
     playerHeight,
     playerImageSrc
   ) {
     this.gameScreen = gameScreen;
-    this.positionLeft = positionLeft;
-    this.positionTop = positionTop;
+    this.left = left; // Cambié positionLeft por left
+    this.top = top; // Cambié positionTop por top
 
     this.width = playerWidth;
     this.height = playerHeight;
     this.directionX = 0;
     this.directionY = 0;
-    this.speed = 1; // Velocidad base del jugador
+    this.speed = 1;
 
     this.projectileType = "normal";
-    this.speedTimeout = null; // Temporizador para el power-up de velocidad
-    this.musicBallTimeout = null; // Temporizador para el power-up de musicBall
+    this.speedTimeout = null;
+    this.musicBallTimeout = null;
 
     this.element = document.createElement("img");
     this.element.src = playerImageSrc;
     this.element.style.position = "absolute";
-    this.element.style.top = `${positionTop}px`;
-    this.element.style.left = `${positionLeft}px`;
+    this.element.style.top = `${top}px`; // Cambié positionTop por top
+    this.element.style.left = `${left}px`; // Cambié positionLeft por left
     this.element.style.width = `${playerWidth}px`;
     this.element.style.height = `${playerHeight}px`;
 
@@ -35,90 +35,86 @@ class Player {
   }
 
   move() {
-    this.positionLeft += this.directionX * (this.speed || 1); // Multiplica por la velocidad
-    this.positionTop += this.directionY * (this.speed || 1); // Multiplica por la velocidad
+    this.left += this.directionX * this.speed; // Cambié positionLeft por left
+    this.top += this.directionY * this.speed; // Cambié positionTop por top
 
-    // Obtener las dimensiones dinámicas del área de juego
     const gameWidth = this.gameScreen.offsetWidth;
     const gameHeight = this.gameScreen.offsetHeight;
 
-    // Limitar movimiento dentro de los bordes del juego
-    if (this.positionLeft < 0) this.positionLeft = 0;
-    if (this.positionLeft + this.width > gameWidth)
-      this.positionLeft = gameWidth - this.width;
-    if (this.positionTop < 0) this.positionTop = 0;
-    if (this.positionTop + this.height > gameHeight)
-      this.positionTop = gameHeight - this.height;
+    if (this.left < 0) this.left = 0;
+    if (this.left + this.width > gameWidth) this.left = gameWidth - this.width;
+    if (this.top < 0) this.top = 0;
+    if (this.top + this.height > gameHeight)
+      this.top = gameHeight - this.height;
 
     this.updatePosition();
   }
 
   updatePosition() {
-    this.element.style.top = `${this.positionTop}px`;
-    this.element.style.left = `${this.positionLeft}px`;
+    this.element.style.top = `${this.top}px`; // Cambié positionTop por top
+    this.element.style.left = `${this.left}px`; // Cambié positionLeft por left
   }
 
   blink() {
     let count = 0;
 
     const blinkInterval = setInterval(() => {
-      //onsole.log(`Blinking... Count: ${count}`); // Depuración
-
       this.element.style.opacity =
-        this.element.style.opacity === "0" ? "1" : "0"; // Alternar entre visible e invisible
+        this.element.style.opacity === "0" ? "1" : "0";
       count++;
 
       if (count === 6) {
         clearInterval(blinkInterval);
-        this.element.style.opacity = "1"; // Asegurarse de que quede visible al final
+        this.element.style.opacity = "1";
       }
     }, 200);
   }
 
   takeDamage() {
-    // Animación de daño: parpadeo
     this.blink();
-
-    // Aquí puedes añadir más lógica si es necesario (por ejemplo, reducir vidas)
   }
 
   shoot() {
     let projectileImage;
-    let projectileWidth = 20; // Tamaño por defecto
-    let projectileHeight = 20; // Tamaño por defecto
+    let projectileWidth = 20;
+    let projectileHeight = 20;
 
     if (this.projectileType === "musicBall") {
-      projectileImage = "images/musicBall.png"; // Imagen para el disparo especial
-      projectileWidth = 50; // Ancho más grande para musicBall
-      projectileHeight = 50; // Alto más grande para musicBall
+      projectileImage = "images/musicBall.png";
+      projectileWidth = 50;
+      projectileHeight = 50;
     } else {
-      projectileImage = "images/projectile.png"; // Imagen para el disparo normal
+      projectileImage = "images/projectile.png";
     }
 
     const projectile = new Projectile(
       this.gameScreen,
-      this.positionLeft + this.width,
-      this.positionTop + this.height / 2 - projectileHeight / 2,
-      projectileWidth, // Ancho del proyectil
-      projectileHeight, // Alto del proyectil
-      8, // Velocidad del proyectil
-      projectileImage // Imagen personalizada
+      this.left + this.width,
+      this.top + this.height / 2 - projectileHeight / 2,
+      projectileWidth,
+      projectileHeight,
+      8,
+      projectileImage
     );
 
-    this.shootSound.currentTime = 0; // Reinicia el sonido si ya se está reproduciendo
+    this.shootSound.currentTime = 0;
     this.shootSound.play();
 
     return projectile;
   }
 
   checkCollision(obstacle) {
-    const collision = !(
-      this.positionTop > obstacle.top + obstacle.height ||
-      this.positionTop + this.height < obstacle.top ||
-      this.positionLeft > obstacle.left + obstacle.width ||
-      this.positionLeft + this.width < obstacle.left
-    );
+    const playerRight = this.left + this.width;
+    const playerBottom = this.top + this.height;
 
-    return collision;
+    const obstacleRight = obstacle.left + obstacle.width;
+    const obstacleBottom = obstacle.top + obstacle.height;
+
+    return !(
+      playerRight < obstacle.left ||
+      this.left > obstacleRight ||
+      playerBottom < obstacle.top ||
+      this.top > obstacleBottom
+    );
   }
 }
