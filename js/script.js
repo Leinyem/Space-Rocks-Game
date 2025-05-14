@@ -40,6 +40,12 @@ window.onload = function () {
       const projectile = ourNewGame.player.shoot(); // Proyectil created
       ourNewGame.projectiles.push(projectile);
     }
+
+    // NUEVO: Q para activar/desactivar batería
+    if (event.code === "KeyQ") {
+      ourNewGame.toggleDrumLoop();
+    }
+    // (En el futuro: W y E para bajo y synth)
   });
 
   window.addEventListener("keyup", (event) => {

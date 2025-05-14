@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Orbitron:700&display=swap");
+
 body {
   margin: 0;
   padding: 0;
@@ -7,16 +9,17 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: black;
+  background-color: #0b0b1a;
+  font-family: "Orbitron", Arial, sans-serif;
   /*  overflow: hidden; */
 }
 
 #game-intro {
   padding: 0 0;
   text-align: center;
-  background-color: black;
+  background-color: #0b0b1a;
   margin: 0;
-  color: whitesmoke;
+  color: #e3e3fa;
 }
 #game-intro img {
   width: 70%;
@@ -31,13 +34,72 @@ body {
   justify-content: center;
   margin: 0;
   padding: 0 10px;
+  background: rgba(20, 20, 40, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 0 24px 6px #00eaff80, 0 0 2px 1px #fff inset;
+  font-family: "Orbitron", Arial, sans-serif;
+  color: #fff;
+  padding: 24px 32px 32px 32px;
+  margin-bottom: 24px;
+  border: 2px solid #0ff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #00eaff, 0 0 2px #fff;
+  position: relative;
+}
+
+#statsContainer h2 {
+  font-family: "Orbitron", Arial, sans-serif;
+  color: #ff00cc;
+  font-size: 2em;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 12px #ff00cc, 0 0 4px #fff;
+}
+
+#statsContainer p,
+#statsContainer span {
+  font-size: 1.2em;
+  font-family: "Orbitron", Arial, sans-serif;
+  color: #fff;
+  text-shadow: 0 0 4px #00eaff, 0 0 2px #fff;
+}
+
+/* Zona de cristales desbloqueados */
+#crystals-unlocked {
+  margin-top: 18px;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  min-height: 54px;
+  background: rgba(10, 10, 30, 0.7);
+  border: 2px solid #ff00cc;
+  border-radius: 12px;
+  box-shadow: 0 0 16px 4px #ff00cc80, 0 0 2px 1px #fff inset;
+  padding: 10px 0;
+  transition: box-shadow 0.3s;
+}
+
+#crystals-unlocked img {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 0 10px #00eaff) drop-shadow(0 0 20px #ff00cc);
+  border-radius: 8px;
+  background: #111;
+  border: 2px solid #00eaff;
+  transition: filter 0.2s, border-color 0.2s;
+}
+
+#crystals-unlocked img:hover {
+  filter: drop-shadow(0 0 20px #ff0) drop-shadow(0 0 40px #0ff);
+  border-color: #fff;
 }
 
 #game-intro p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: whitesmoke;
+  color: #e3e3fa;
   margin-bottom: 10px;
   margin-top: -10px;
 }
@@ -46,8 +108,8 @@ body {
   width: 100%;
   padding: 0px 0px;
   justify-content: center;
-  background-color: black;
-  color: whitesmoke;
+  background-color: #0b0b1a;
+  color: #e3e3fa;
   display: flex;
 }
 
@@ -59,15 +121,14 @@ body {
   position: relative;
   background-image: url(../images/gameBackground.png);
   background-size: cover;
-  background-color: black;
+  background-color: #111;
   background-position: center;
   width: 1200px;
   height: 550px;
 
   border: 5px solid transparent; /* Borde transparente */
   border-radius: 15px; /* Redondear bordes */
-  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5),
-    /* Brillo externo */ inset 0 0 10px 2px rgba(0, 0, 0, 0.8); /* Sombra interna */
+  box-shadow: 0 0 20px 5px #00eaff80, inset 0 0 10px 2px #ff00cc80;
 }
 
 @keyframes slide {
@@ -87,26 +148,29 @@ body {
     background-position: 0 0;
   }
   to {
-    background-position: -700px 0; /* Ajusta según el tamaño del sprite sheet! Mira abajo. */
+    background-position: -700px 0;
   }
 }
 
 .explosion {
-  background-size: 700px 100px; /* Ancho total del sprite sheet y altura de un frame! */
-  background-repeat: no-repeat; /* Que no se repita */
-  background-position: 0 0; /* Asegurar que comience en el primer frame */
-  animation: explosion-animation 0.5s steps(7) forwards; /* Recuerda que son 7 frames */
+  background-size: 700px 100px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  animation: explosion-animation 0.5s steps(7) forwards;
 }
 
 #game-end {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
   display: none;
   background-image: url(../images/fondoPres.png);
   background-size: cover;
   color: white;
   background-repeat: no-repeat;
-  height: 100vh;
-  width: 100vw;
-
   align-items: center;
   justify-content: space-between;
 }
@@ -116,7 +180,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin-top: 250px;
-  color: whitesmoke;
+  color: #e3e3fa;
 }
 
 body button {
@@ -125,10 +189,13 @@ body button {
   color: #fff;
   padding: 10px 40px;
   border: 5px solid #000001da;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px #00eaff80;
   border-radius: 5px;
   margin-bottom: 20px;
   margin-top: 20px;
+  font-family: "Orbitron", Arial, sans-serif;
+  text-shadow: 0 0 8px #00eaff, 0 0 2px #fff;
+  letter-spacing: 2px;
 }
 
 @keyframes floatAndRotate {

@@ -18,16 +18,32 @@ class Game {
 
     this.obstacles = [];
     this.projectiles = [];
-    this.powerUps = []; // Lista de power-ups activos
+    this.powerUps = [];
 
     this.score = 0;
     this.lives = 10;
-
     this.gameIsOver = false;
 
-    this.backgroundMusic = new Audio("./audio/mainTheme.wav");
-    this.backgroundMusic.loop = true;
-    this.backgroundMusic.volume = 0.5;
+    this.highscore = localStorage.getItem("highscore") || 0;
+    document.getElementById("highscore").textContent = this.highscore;
+
+    // NUEVO: Contadores de cristales por tipo
+    this.crystalCounts = {
+      beatCore: 0,
+      bassFragment: 0,
+      synthCrystal: 0,
+    };
+    this.crystalsUnlocked = {
+      beatCore: false,
+      bassFragment: false,
+      synthCrystal: false,
+    };
+
+    // NUEVO: Loop de batería
+    this.drumLoop = new Audio("./audio/drumLoop.mp3");
+    this.drumLoop.loop = true;
+    this.drumLoop.volume = 0.7;
+    this.drumLoopActive = false;
   }
 
   start() {
@@ -35,14 +51,17 @@ class Game {
     this.gameScreen.style.width = `${this.width}px`;
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "block";
-    this.backgroundMusic.play();
+    // QUITADO: this.backgroundMusic.play();
     this.gameLoop();
   }
 
   gameLoop() {
     if (this.gameIsOver) {
-      this.backgroundMusic.pause();
-      this.backgroundMusic.currentTime = 0;
+      // Si quieres pausar el loop de batería al terminar el juego:
+      if (this.drumLoopActive) {
+        this.drumLoop.pause();
+        this.drumLoopActive = false;
+      }
       return;
     }
 
@@ -52,29 +71,25 @@ class Game {
   }
 
   update() {
-    // Mover el jugador
     this.player.move();
 
-    // Mover los obstáculos
+    // Mueve los obstáculos
     this.obstacles.forEach((obstacle) => {
       obstacle.move();
 
       // Verificar colisión entre el jugador y el obstáculo
       if (this.player.checkCollision(obstacle)) {
-        // SOLO DAÑO SI NO HAY ESCUDO
         if (!this.player.isShielded) {
-          console.log("💥 Player collided with obstacle!");
           this.player.takeDamage();
           this.handleCollisionWithObstacle(obstacle);
         } else {
-          // Si hay escudo, solo eliminar el obstáculo
           obstacle.remove();
           this.obstacles.splice(this.obstacles.indexOf(obstacle), 1);
         }
       }
     });
 
-    // Mover los proyectiles
+    // Mueve los proyectiles
     this.projectiles.forEach((projectile) => {
       projectile.move();
     });
@@ -90,7 +105,6 @@ class Game {
     this.projectiles.forEach((projectile) => {
       this.obstacles.forEach((obstacle, index) => {
         if (projectile.checkCollision(obstacle)) {
-          console.log("💥 Collision detected!");
           projectile.remove();
 
           if (projectile.element.src.includes("musicBall.png")) {
@@ -106,7 +120,7 @@ class Game {
             obstacle.remove();
             this.obstacles.splice(this.obstacles.indexOf(obstacle), 1);
 
-            const points = obstacle.width > 80 ? 30 : 10; //score
+            const points = obstacle.width > 80 ? 30 : 10;
             this.updateScore(points);
 
             // Generar un power-up o cristal musical con la nueva probabilidad
@@ -153,7 +167,7 @@ class Game {
               const points = obstacle.width > 80 ? 30 : 10;
               this.updateScore(points);
 
-              // Generar un power-up o cristal musical con nuevas probabilidades
+              // Generar un power-up o cristal musical con la nueva probabilidad
               if (Math.random() > 0.5) {
                 let rand = Math.random();
                 let powerUpType;
@@ -185,7 +199,7 @@ class Game {
       });
     });
 
-    // Mover los power-ups
+    // Mueve los power-ups
     this.powerUps.forEach((powerUp) => {
       powerUp.move();
     });
@@ -273,7 +287,6 @@ class Game {
 
   handleCollisionWithObstacle(obstacle) {
     this.lives -= 1;
-    console.log(`Lives remaining: ${this.lives}`);
 
     const livesElement = document.getElementById("lives");
     if (livesElement) {
@@ -289,53 +302,60 @@ class Game {
   }
 
   endGame() {
-    console.log("Game Over!");
     this.gameIsOver = true;
     this.gameScreen.style.display = "none";
+    document.getElementById("game-container").style.display = "none";
+
     this.gameEndScreen.style.display = "block";
+    if (this.score > this.highscore) {
+      localStorage.setItem("highscore", this.score);
+    }
+    if (this.startScreen) {
+      this.startScreen.style.display = "none";
+    }
+    // NUEVO: Pausa el loop de batería si está activo
+    if (this.drumLoopActive) {
+      this.drumLoop.pause();
+      this.drumLoopActive = false;
+    }
   }
 
   applyPowerUp(type) {
-    const playerEl = this.player.element;
-    if (!this.player._powerUpStates) {
-      this.player._powerUpStates = {
-        speed: false,
-        musicBall: false,
-        shield: false,
-      };
-    }
-
+    // Power-ups clásicos...
     if (type === "speed") {
+      this.player._powerUpStates = this.player._powerUpStates || {};
       this.player._powerUpStates.speed = true;
       if (this.player.speedTimeout) {
         clearTimeout(this.player.speedTimeout);
       } else {
         this.player.speed *= 4;
       }
-      this.updatePlayerHalo();
+      this.updatePlayerHalo && this.updatePlayerHalo();
       this.player.speedTimeout = setTimeout(() => {
         this.player.speed /= 4;
         this.player.speedTimeout = null;
         this.player._powerUpStates.speed = false;
-        this.updatePlayerHalo();
+        this.updatePlayerHalo && this.updatePlayerHalo();
       }, 5000);
     } else if (type === "musicBall") {
+      this.player._powerUpStates = this.player._powerUpStates || {};
       this.player._powerUpStates.musicBall = true;
       if (this.player.musicBallTimeout) {
         clearTimeout(this.player.musicBallTimeout);
       }
       this.player.projectileType = "musicBall";
-      this.updatePlayerHalo();
+      this.updatePlayerHalo && this.updatePlayerHalo();
       this.player.musicBallTimeout = setTimeout(() => {
         this.player.projectileType = "normal";
         this.player.musicBallTimeout = null;
         this.player._powerUpStates.musicBall = false;
-        this.updatePlayerHalo();
+        this.updatePlayerHalo && this.updatePlayerHalo();
       }, 10000);
     } else if (type === "shield") {
+      this.player._powerUpStates = this.player._powerUpStates || {};
       this.player._powerUpStates.shield = true;
       this.player.isShielded = true;
-      this.updatePlayerHalo();
+      this.updatePlayerHalo && this.updatePlayerHalo();
       if (this.player.shieldTimeout) {
         clearTimeout(this.player.shieldTimeout);
       }
@@ -343,8 +363,25 @@ class Game {
         this.player.isShielded = false;
         this.player.shieldTimeout = null;
         this.player._powerUpStates.shield = false;
-        this.updatePlayerHalo();
+        this.updatePlayerHalo && this.updatePlayerHalo();
       }, 10000);
+    }
+
+    // NUEVO: Cristales musicales
+    if (
+      type === "beatCore" ||
+      type === "bassFragment" ||
+      type === "synthCrystal"
+    ) {
+      this.crystalCounts[type]++;
+      if (!this.crystalsUnlocked[type] && this.crystalCounts[type] >= 10) {
+        this.crystalsUnlocked[type] = true;
+        this.updateCrystalsUnlockedHUD();
+        // Aquí puedes poner un sonido de desbloqueo si quieres
+      } else {
+        this.updateCrystalsUnlockedHUD();
+      }
+      return;
     }
   }
 
@@ -359,13 +396,13 @@ class Game {
       "player-neon-gold"
     );
 
-    if (states.shield) {
+    if (states && states.shield) {
       playerEl.classList.add("player-neon-gold");
-    } else if (states.speed && states.musicBall) {
+    } else if (states && states.speed && states.musicBall) {
       playerEl.classList.add("player-neon-purple");
-    } else if (states.speed) {
+    } else if (states && states.speed) {
       playerEl.classList.add("player-neon-blue");
-    } else if (states.musicBall) {
+    } else if (states && states.musicBall) {
       playerEl.classList.add("player-neon-red");
     }
   }
@@ -373,5 +410,59 @@ class Game {
   updateScore(points) {
     this.score += points;
     document.getElementById("score").textContent = this.score;
+
+    if (this.score > this.highscore) {
+      this.highscore = this.score;
+      localStorage.setItem("highscore", this.highscore);
+      document.getElementById("highscore").textContent = this.highscore;
+    }
+  }
+
+  // NUEVO: Método para actualizar el HUD de cristales desbloqueados
+  updateCrystalsUnlockedHUD() {
+    const container = document.getElementById("crystals-unlocked");
+    if (!container) return;
+    container.innerHTML = ""; // Limpia
+
+    if (this.crystalsUnlocked.beatCore) {
+      const el = document.createElement("img");
+      el.src = "images/beatCore.png";
+      el.alt = "Batería desbloqueada";
+      el.title = "Q: Activar/Desactivar batería";
+      el.style.width = "40px";
+      el.style.height = "40px";
+      container.appendChild(el);
+    }
+    if (this.crystalsUnlocked.bassFragment) {
+      const el = document.createElement("img");
+      el.src = "images/bassShard.png";
+      el.alt = "Bajo desbloqueado";
+      el.title = "W: Activar/Desactivar bajo";
+      el.style.width = "40px";
+      el.style.height = "40px";
+      container.appendChild(el);
+    }
+    if (this.crystalsUnlocked.synthCrystal) {
+      const el = document.createElement("img");
+      el.src = "images/synthCrystal.png";
+      el.alt = "Synth desbloqueado";
+      el.title = "E: Activar/Desactivar synth";
+      el.style.width = "40px";
+      el.style.height = "40px";
+      container.appendChild(el);
+    }
+  }
+
+  // NUEVO: Métodos para activar/desactivar loops
+  activateDrumLoop() {
+    if (!this.crystalsUnlocked.beatCore) return;
+    if (!this.drumLoopActive) {
+      this.drumLoop.currentTime = 0;
+      this.drumLoop.play();
+      this.drumLoopActive = true;
+    } else {
+      this.drumLoop.pause();
+      this.drumLoopActive = false;
+    }
   }
 }
