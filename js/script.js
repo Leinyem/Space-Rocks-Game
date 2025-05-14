@@ -12,17 +12,7 @@ window.onload = function () {
       ourNewGame = null;
     }
 
-    /* //dont forget to ADD MUSIC and PAUSE it when START
-
-    const introMusic = document.getElementById("introMusic");
-    
-    if(introMusic){
-
-      introMusic.volume = 1;
-      introMusic.play
- }
-     
-     if(introMusic) introMusic.pause()*/
+    // Reset the game screen, gave problems interfiering with intro screen
 
     ourNewGame = new Game();
     ourNewGame.start();
@@ -42,12 +32,12 @@ window.onload = function () {
   window.addEventListener("keydown", (event) => {
     if (!ourNewGame) return;
     if (event.code === "ArrowUp") ourNewGame.player.directionY = -5;
-    if (event.code === "ArrowDown") ourNewGame.player.directionY = 5; //Player
+    if (event.code === "ArrowDown") ourNewGame.player.directionY = 5;
     if (event.code === "ArrowLeft") ourNewGame.player.directionX = -5;
     if (event.code === "ArrowRight") ourNewGame.player.directionX = 5;
 
     if (event.code === "Space" && ourNewGame) {
-      const projectile = ourNewGame.player.shoot(); // Projectile
+      const projectile = ourNewGame.player.shoot(); // Proyectil created
       ourNewGame.projectiles.push(projectile);
     }
   });

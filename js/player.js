@@ -1,15 +1,15 @@
 class Player {
   constructor(
     gameScreen,
-    left, // Cambié positionLeft por left
-    top, // Cambié positionTop por top
+    left, // Todos los positionLeft los cambio por left y positionTop por top, más claro.
+    top,
     playerWidth,
     playerHeight,
     playerImageSrc
   ) {
     this.gameScreen = gameScreen;
-    this.left = left; // Cambié positionLeft por left
-    this.top = top; // Cambié positionTop por top
+    this.left = left;
+    this.top = top;
 
     this.width = playerWidth;
     this.height = playerHeight;
@@ -24,8 +24,8 @@ class Player {
     this.element = document.createElement("img");
     this.element.src = playerImageSrc;
     this.element.style.position = "absolute";
-    this.element.style.top = `${top}px`; // Cambié positionTop por top
-    this.element.style.left = `${left}px`; // Cambié positionLeft por left
+    this.element.style.top = `${top}px`;
+    this.element.style.left = `${left}px`;
     this.element.style.width = `${playerWidth}px`;
     this.element.style.height = `${playerHeight}px`;
 
@@ -35,8 +35,8 @@ class Player {
   }
 
   move() {
-    this.left += this.directionX * this.speed; // Cambié positionLeft por left
-    this.top += this.directionY * this.speed; // Cambié positionTop por top
+    this.left += this.directionX * this.speed;
+    this.top += this.directionY * this.speed;
 
     const gameWidth = this.gameScreen.offsetWidth;
     const gameHeight = this.gameScreen.offsetHeight;
@@ -51,8 +51,8 @@ class Player {
   }
 
   updatePosition() {
-    this.element.style.top = `${this.top}px`; // Cambié positionTop por top
-    this.element.style.left = `${this.left}px`; // Cambié positionLeft por left
+    this.element.style.top = `${this.top}px`;
+    this.element.style.left = `${this.left}px`;
   }
 
   blink() {

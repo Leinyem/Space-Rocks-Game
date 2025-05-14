@@ -22,11 +22,11 @@ class PowerUp {
 
     this.gameScreen.appendChild(this.element);
 
-    // Tiempo de vida del power-up (desaparece después de 10 segundos)
+    // Tiempo de vida del power-up
     this.lifetime = 10000;
     setTimeout(() => this.remove(), this.lifetime);
 
-    this._removed = false; // Flag para saber si ya fue eliminado
+    this._removed = false; // Flag para saber si ya fue eliminado! Puede dar error si se intenta eliminar dos veces: se para en el aire o no se reconoce.
   }
 
   getImageByType() {
@@ -37,14 +37,14 @@ class PowerUp {
     } else if (this.type === "shield") {
       return "images/claveSolDorada.png";
     } else if (this.type === "beatCore") {
-      return "images/beatCore.png"; // NUEVO: pon aquí la imagen de batería
+      return "images/beatCore.png";
     } else if (this.type === "bassFragment") {
-      return "images/bassShard.png"; // NUEVO: pon aquí la imagen de bajo
+      return "images/bassShard.png";
     } else if (this.type === "synthCrystal") {
-      return "images/synthCrystal.png"; // NUEVO: pon aquí la imagen de synth
+      return "images/synthCrystal.png";
     } else {
       console.error("Tipo de PowerUp inválido:", this.type);
-      return ""; // Imagen por defecto
+      return "";
     }
   }
 

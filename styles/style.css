@@ -65,7 +65,7 @@ body {
   height: 550px;
 
   border: 5px solid transparent; /* Borde transparente */
-  border-radius: 15px; /* Bordes redondeados */
+  border-radius: 15px; /* Redondear bordes */
   box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5),
     /* Brillo externo */ inset 0 0 10px 2px rgba(0, 0, 0, 0.8); /* Sombra interna */
 }
@@ -87,15 +87,15 @@ body {
     background-position: 0 0;
   }
   to {
-    background-position: -700px 0; /* Ajusta según el tamaño del sprite sheet */
+    background-position: -700px 0; /* Ajusta según el tamaño del sprite sheet! Mira abajo. */
   }
 }
 
 .explosion {
-  background-size: 700px 100px; /* Ancho total del sprite sheet y altura de un frame */
-  background-repeat: no-repeat; /* Evitar que se repita */
+  background-size: 700px 100px; /* Ancho total del sprite sheet y altura de un frame! */
+  background-repeat: no-repeat; /* Que no se repita */
   background-position: 0 0; /* Asegurar que comience en el primer frame */
-  animation: explosion-animation 0.5s steps(7) forwards; /* 7 frames en el sprite sheet */
+  animation: explosion-animation 0.5s steps(7) forwards; /* Recuerda que son 7 frames */
 }
 
 #game-end {

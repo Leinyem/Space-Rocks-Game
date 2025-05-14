@@ -23,7 +23,7 @@ class Projectile {
 
   move() {
     this.left += this.speed; // Mover el proyectil hacia la derecha
-    this.updatePosition(); // Actualizar la posición visual
+    this.updatePosition(); // Actualizar la posición visual!!
   }
 
   updatePosition() {

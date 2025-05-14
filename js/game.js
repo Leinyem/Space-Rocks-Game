@@ -52,10 +52,10 @@ class Game {
   }
 
   update() {
-    // Mueve el jugador
+    // Mover el jugador
     this.player.move();
 
-    // Mueve los obstáculos
+    // Mover los obstáculos
     this.obstacles.forEach((obstacle) => {
       obstacle.move();
 
@@ -74,7 +74,7 @@ class Game {
       }
     });
 
-    // Mueve los proyectiles
+    // Mover los proyectiles
     this.projectiles.forEach((projectile) => {
       projectile.move();
     });
@@ -106,7 +106,7 @@ class Game {
             obstacle.remove();
             this.obstacles.splice(this.obstacles.indexOf(obstacle), 1);
 
-            const points = obstacle.width > 80 ? 30 : 10;
+            const points = obstacle.width > 80 ? 30 : 10; //score
             this.updateScore(points);
 
             // Generar un power-up o cristal musical con la nueva probabilidad
@@ -153,7 +153,7 @@ class Game {
               const points = obstacle.width > 80 ? 30 : 10;
               this.updateScore(points);
 
-              // Generar un power-up o cristal musical con la nueva probabilidad
+              // Generar un power-up o cristal musical con nuevas probabilidades
               if (Math.random() > 0.5) {
                 let rand = Math.random();
                 let powerUpType;
@@ -185,7 +185,7 @@ class Game {
       });
     });
 
-    // Mueve los power-ups
+    // Mover los power-ups
     this.powerUps.forEach((powerUp) => {
       powerUp.move();
     });
