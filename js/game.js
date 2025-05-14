@@ -27,7 +27,6 @@ class Game {
     this.highscore = localStorage.getItem("highscore") || 0;
     document.getElementById("highscore").textContent = this.highscore;
 
-    // NUEVO: Contadores de cristales por tipo
     this.crystalCounts = {
       beatCore: 0,
       bassFragment: 0,
@@ -39,7 +38,6 @@ class Game {
       synthCrystal: false,
     };
 
-    // NUEVO: Loop de batería
     this.drumLoop = new Audio("./audio/drumLoop.mp3");
     this.drumLoop.loop = true;
     this.drumLoop.volume = 0.7;
@@ -51,13 +49,11 @@ class Game {
     this.gameScreen.style.width = `${this.width}px`;
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "block";
-    // QUITADO: this.backgroundMusic.play();
     this.gameLoop();
   }
 
   gameLoop() {
     if (this.gameIsOver) {
-      // Si quieres pausar el loop de batería al terminar el juego:
       if (this.drumLoopActive) {
         this.drumLoop.pause();
         this.drumLoopActive = false;
@@ -66,18 +62,15 @@ class Game {
     }
 
     this.update();
-
     window.requestAnimationFrame(() => this.gameLoop());
   }
 
   update() {
     this.player.move();
 
-    // Mueve los obstáculos
     this.obstacles.forEach((obstacle) => {
       obstacle.move();
 
-      // Verificar colisión entre el jugador y el obstáculo
       if (this.player.checkCollision(obstacle)) {
         if (!this.player.isShielded) {
           this.player.takeDamage();
@@ -89,19 +82,16 @@ class Game {
       }
     });
 
-    // Mueve los proyectiles
     this.projectiles.forEach((projectile) => {
       projectile.move();
     });
 
-    // Generar nuevos meteoritos aleatoriamente
     if (Math.random() > 0.98 && this.obstacles.length < 5) {
       const randomTop = Math.floor(Math.random() * (this.height - 150) + 50);
       const newObstacle = new Obstacle(this.gameScreen, this.width, randomTop);
       this.obstacles.push(newObstacle);
     }
 
-    // CHEQUEO DE COLISIONES ENTRE PROYECTILES Y OBSTÁCULOS
     this.projectiles.forEach((projectile) => {
       this.obstacles.forEach((obstacle, index) => {
         if (projectile.checkCollision(obstacle)) {
@@ -123,19 +113,18 @@ class Game {
             const points = obstacle.width > 80 ? 30 : 10;
             this.updateScore(points);
 
-            // Generar un power-up o cristal musical con la nueva probabilidad
             if (Math.random() > 0.5) {
               let rand = Math.random();
               let powerUpType;
-              if (rand < 0.55) {
+              if (rand < 0.25) {
                 powerUpType = "speed";
-              } else if (rand < 0.85) {
+              } else if (rand < 0.35) {
                 powerUpType = "musicBall";
-              } else if (rand < 0.92) {
+              } else if (rand < 0.4) {
                 powerUpType = "shield";
-              } else if (rand < 0.9533) {
+              } else if (rand < 0.6) {
                 powerUpType = "beatCore";
-              } else if (rand < 0.9866) {
+              } else if (rand < 0.8) {
                 powerUpType = "bassFragment";
               } else {
                 powerUpType = "synthCrystal";
@@ -167,19 +156,18 @@ class Game {
               const points = obstacle.width > 80 ? 30 : 10;
               this.updateScore(points);
 
-              // Generar un power-up o cristal musical con la nueva probabilidad
               if (Math.random() > 0.5) {
                 let rand = Math.random();
                 let powerUpType;
-                if (rand < 0.55) {
+                if (rand < 0.25) {
                   powerUpType = "speed";
-                } else if (rand < 0.85) {
+                } else if (rand < 0.35) {
                   powerUpType = "musicBall";
-                } else if (rand < 0.92) {
+                } else if (rand < 0.4) {
                   powerUpType = "shield";
-                } else if (rand < 0.9533) {
+                } else if (rand < 0.6) {
                   powerUpType = "beatCore";
-                } else if (rand < 0.9866) {
+                } else if (rand < 0.8) {
                   powerUpType = "bassFragment";
                 } else {
                   powerUpType = "synthCrystal";
@@ -199,12 +187,10 @@ class Game {
       });
     });
 
-    // Mueve los power-ups
     this.powerUps.forEach((powerUp) => {
       powerUp.move();
     });
 
-    // Detectar colisiones entre el jugador y los power-ups y limpiar eliminados
     this.powerUps = this.powerUps.filter((powerUp) => {
       if (powerUp._removed) return false;
       if (powerUp.checkCollision(this.player)) {
@@ -215,7 +201,6 @@ class Game {
       return true;
     });
 
-    // Limpiar obstáculos fuera de la pantalla
     this.obstacles = this.obstacles.filter((obstacle) => {
       const obstacleRight = obstacle.left + obstacle.width;
       if (obstacleRight < 0) {
@@ -226,7 +211,6 @@ class Game {
       }
     });
 
-    // Limpiar proyectiles fuera de la pantalla
     this.projectiles = this.projectiles.filter((projectile) => {
       const projectileRight = projectile.left + projectile.width;
       if (projectile._removed) return false;
@@ -305,7 +289,6 @@ class Game {
     this.gameIsOver = true;
     this.gameScreen.style.display = "none";
     document.getElementById("game-container").style.display = "none";
-
     this.gameEndScreen.style.display = "block";
     if (this.score > this.highscore) {
       localStorage.setItem("highscore", this.score);
@@ -313,7 +296,6 @@ class Game {
     if (this.startScreen) {
       this.startScreen.style.display = "none";
     }
-    // NUEVO: Pausa el loop de batería si está activo
     if (this.drumLoopActive) {
       this.drumLoop.pause();
       this.drumLoopActive = false;
@@ -321,7 +303,6 @@ class Game {
   }
 
   applyPowerUp(type) {
-    // Power-ups clásicos...
     if (type === "speed") {
       this.player._powerUpStates = this.player._powerUpStates || {};
       this.player._powerUpStates.speed = true;
@@ -367,17 +348,34 @@ class Game {
       }, 10000);
     }
 
-    // NUEVO: Cristales musicales
     if (
       type === "beatCore" ||
       type === "bassFragment" ||
       type === "synthCrystal"
     ) {
       this.crystalCounts[type]++;
+      let soundType;
+      switch (type) {
+        case "beatCore":
+          soundType = "drum";
+          break;
+        case "bassFragment":
+          soundType = "bass";
+          break;
+        case "synthCrystal":
+          soundType = "synth";
+          break;
+      }
+
+      if (this.player.crystalTimeout) clearTimeout(this.player.crystalTimeout);
+      this.player.projectileType = soundType;
+      this.player.crystalTimeout = setTimeout(() => {
+        this.player.projectileType = "normal";
+      }, 15000);
+
       if (!this.crystalsUnlocked[type] && this.crystalCounts[type] >= 10) {
         this.crystalsUnlocked[type] = true;
         this.updateCrystalsUnlockedHUD();
-        // Aquí puedes poner un sonido de desbloqueo si quieres
       } else {
         this.updateCrystalsUnlockedHUD();
       }
@@ -418,11 +416,10 @@ class Game {
     }
   }
 
-  // NUEVO: Método para actualizar el HUD de cristales desbloqueados
   updateCrystalsUnlockedHUD() {
     const container = document.getElementById("crystals-unlocked");
     if (!container) return;
-    container.innerHTML = ""; // Limpia
+    container.innerHTML = "";
 
     if (this.crystalsUnlocked.beatCore) {
       const el = document.createElement("img");
@@ -453,7 +450,6 @@ class Game {
     }
   }
 
-  // NUEVO: Métodos para activar/desactivar loops
   activateDrumLoop() {
     if (!this.crystalsUnlocked.beatCore) return;
     if (!this.drumLoopActive) {

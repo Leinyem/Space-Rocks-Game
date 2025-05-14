@@ -1,7 +1,7 @@
 class Player {
   constructor(
     gameScreen,
-    left, // Todos los positionLeft los cambio por left y positionTop por top, más claro.
+    left,
     top,
     playerWidth,
     playerHeight,
@@ -20,6 +20,24 @@ class Player {
     this.projectileType = "normal";
     this.speedTimeout = null;
     this.musicBallTimeout = null;
+    this.crystalTimeout = null;
+
+    // Sonidos con precarga
+    this.shootSound = new Audio("/audio/soundWave.mp3");
+    this.shootSound2 = new Audio("/audio/soundWave2.mp3");
+    this.drumShotSound = new Audio("/audio/drum-beat.mp3");
+    this.bassShotSound = new Audio("/audio/bass-pulse.mp3");
+    this.synthShotSound = new Audio("/audio/synth-wave.mp3");
+    this.musicBallSound = new Audio("/audio/soundWave.mp3");
+    this._shootToggle = false;
+
+    // Precargar todos los sonidos
+    this._preloadAudio("/audio/soundWave.mp3");
+    this._preloadAudio("/audio/soundWave2.mp3");
+    this._preloadAudio("/audio/drum-beat.mp3");
+    this._preloadAudio("/audio/bass-pulse.mp3");
+    this._preloadAudio("/audio/synth-wave.mp3");
+    this._preloadAudio("/audio/soundWave.mp3"); // Precargarlo
 
     this.element = document.createElement("img");
     this.element.src = playerImageSrc;
@@ -30,8 +48,13 @@ class Player {
     this.element.style.height = `${playerHeight}px`;
 
     gameScreen.appendChild(this.element);
+  }
 
-    this.shootSound = new Audio("./audio/soundWave.wav");
+  _preloadAudio(url) {
+    const audio = new Audio(url);
+    audio.preload = "auto";
+    audio.volume = 0;
+    audio.play().catch(() => {});
   }
 
   move() {
@@ -78,13 +101,33 @@ class Player {
     let projectileImage;
     let projectileWidth = 20;
     let projectileHeight = 20;
+    let currentSound;
 
-    if (this.projectileType === "musicBall") {
-      projectileImage = "images/musicBall.png";
-      projectileWidth = 50;
-      projectileHeight = 50;
-    } else {
-      projectileImage = "images/projectile.png";
+    switch (this.projectileType) {
+      case "musicBall":
+        projectileImage = "images/musicBall.png";
+        projectileWidth = 30;
+        projectileHeight = 30;
+        currentSound = this.musicBallSound.cloneNode();
+        break;
+      case "drum":
+        currentSound = this.drumShotSound.cloneNode();
+        projectileImage = "images/beat-core.png";
+        break;
+      case "bass":
+        currentSound = this.bassShotSound.cloneNode();
+        projectileImage = "images/bass-pulse.png";
+        break;
+      case "synth":
+        currentSound = this.synthShotSound.cloneNode();
+        projectileImage = "images/synth-wave.png";
+        break;
+      default:
+        projectileImage = "images/projectile.png";
+        currentSound = this._shootToggle
+          ? this.shootSound2.cloneNode()
+          : this.shootSound.cloneNode();
+        this._shootToggle = !this._shootToggle;
     }
 
     const projectile = new Projectile(
@@ -97,8 +140,9 @@ class Player {
       projectileImage
     );
 
-    this.shootSound.currentTime = 0;
-    this.shootSound.play();
+    currentSound.currentTime = 0;
+    currentSound.volume = 0.7;
+    currentSound.play();
 
     return projectile;
   }
