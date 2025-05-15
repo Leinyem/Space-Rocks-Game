@@ -41,9 +41,9 @@ window.onload = function () {
       ourNewGame.projectiles.push(projectile);
     }
 
-    // NUEVO: Q para activar/desactivar batería
+    //Q para activar/desactivar batería
     if (event.code === "KeyQ") {
-      ourNewGame.toggleDrumLoop();
+      ourNewGame.activateDrumLoop();
     }
     // (En el futuro: W y E para bajo y synth)
   });
