@@ -116,7 +116,7 @@ class Player {
         break;
       case "bass":
         currentSound = this.bassShotSound.cloneNode();
-        projectileImage = "images/bass-pulse.png";
+        projectileImage = "images/bass-pulse.mp3";
         break;
       case "synth":
         currentSound = this.synthShotSound.cloneNode();
