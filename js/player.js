@@ -23,21 +23,21 @@ class Player {
     this.crystalTimeout = null;
 
     // Sonidos con precarga
-    this.shootSound = new Audio("/audio/soundWave.mp3");
-    this.shootSound2 = new Audio("/audio/soundWave2.mp3");
-    this.drumShotSound = new Audio("/audio/drum-beat.mp3");
-    this.bassShotSound = new Audio("/audio/bass-pulse.mp3");
-    this.synthShotSound = new Audio("/audio/synth-wave.mp3");
-    this.musicBallSound = new Audio("/audio/soundWave.mp3");
+    this.shootSound = new Audio("audio/soundWave.mp3");
+    this.shootSound2 = new Audio("audio/soundWave2.mp3");
+    this.drumShotSound = new Audio("audio/drum-beat.mp3");
+    this.bassShotSound = new Audio("audio/bass-pulse.mp3");
+    this.synthShotSound = new Audio("audio/synth-wave.mp3");
+    this.musicBallSound = new Audio("audio/soundWave.mp3");
     this._shootToggle = false;
 
     // Precargar todos los sonidos
-    this._preloadAudio("/audio/soundWave.mp3");
-    this._preloadAudio("/audio/soundWave2.mp3");
-    this._preloadAudio("/audio/drum-beat.mp3");
-    this._preloadAudio("/audio/bass-pulse.mp3");
-    this._preloadAudio("/audio/synth-wave.mp3");
-    this._preloadAudio("/audio/soundWave.mp3"); // Precargarlo
+    this._preloadAudio("audio/soundWave.mp3");
+    this._preloadAudio("audio/soundWave2.mp3");
+    this._preloadAudio("audio/drum-beat.mp3");
+    this._preloadAudio("audio/bass-pulse.mp3");
+    this._preloadAudio("audio/synth-wave.mp3");
+    this._preloadAudio("audio/soundWave.mp3"); // Precargarlo
 
     this.element = document.createElement("img");
     this.element.src = playerImageSrc;
@@ -116,7 +116,7 @@ class Player {
         break;
       case "bass":
         currentSound = this.bassShotSound.cloneNode();
-        projectileImage = "images/bass-pulse.mp3";
+        projectileImage = "images/bass-pulse.png";
         break;
       case "synth":
         currentSound = this.synthShotSound.cloneNode();
@@ -141,7 +141,7 @@ class Player {
     );
 
     currentSound.currentTime = 0;
-    currentSound.volume = 0.7;
+    currentSound.volume = 0.5;
     currentSound.play();
 
     return projectile;
